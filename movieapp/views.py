@@ -15,14 +15,14 @@ def directors_list(request):
 
 @api_view(['GET'])
 def movie_list(request):
-    movies = Movie.objects.all()
+    movies = Movie.objects.prefetch_related('reviews', 'director').all()
     data = Serializer2(instance=movies, many=True).data
     return Response(data=data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def review_list(request):
-    review = Review.objects.all()
+    review = Review.objects.prefetch_related('movie').all()
     data = Serializer3(instance=review, many=True).data
     return Response(data=data, status=status.HTTP_200_OK)
 
