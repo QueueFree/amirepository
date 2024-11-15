@@ -13,7 +13,13 @@ def directors_list(request):
         data = Serializer(instance=directors, many=True).data
         return Response(data=data, status=status.HTTP_200_OK)
     elif request.method == 'POST':
-        name = request.data.get('name')
+        serializer = DirectorValidateSerializer(data=request.data)
+        serializer.is_valid()
+        if not serializer.is_valid():
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        name = serializer.validated_data.get('name')
+
         new = Director.objects.create(
             name=name
         )
@@ -28,10 +34,16 @@ def movie_list(request):
         data = Serializer2(instance=movies, many=True).data
         return Response(data=data, status=status.HTTP_200_OK)
     elif request.method == 'POST':
-        title = request.data.get('title')
-        description = request.data.get('description')
-        duration = request.data.get('duration')
-        director = request.data.get('director')
+        serializer = MovieValidateSerializer(data=request.data)
+        serializer.is_valid()
+        if not serializer.is_valid():
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        title = serializer.validated_data.get('title')
+        description = serializer.validated_data.get('description')
+        duration = serializer.validated_data.get('duration')
+        director = serializer.validated_data.get('director')
+
         new = Movie.objects.create(
             title=title,
             description=description,
@@ -50,9 +62,15 @@ def review_list(request):
         data = Serializer3(instance=review, many=True).data
         return Response(data=data, status=status.HTTP_200_OK)
     elif request.method == 'POST':
-        text = request.data.get('text')
-        movie = request.data.get('movie')
-        stars = request.data.get('stars')
+        serializer = ReviewValidateSerializer(data=request.data)
+        serializer.is_valid()
+        if not serializer.is_valid():
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        text = serializer.validated_data.get('text')
+        movie = serializer.validated_data.get('movie')
+        stars = serializer.validated_data.get('stars')
+
         new = Review.objects.create(
             text=text,
             stars=stars
