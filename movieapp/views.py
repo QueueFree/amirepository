@@ -8,6 +8,7 @@ from .serializerMovie import *
 
 @api_view(['GET', 'POST'])
 def directors_list(request):
+    print(request.user)
     if request.method == 'GET':
         directors = Director.objects.all()
         data = Serializer(instance=directors, many=True).data
@@ -29,6 +30,7 @@ def directors_list(request):
 
 @api_view(['GET', 'POST'])
 def movie_list(request):
+    print(request.user)
     if request.method == 'GET':
         movies = Movie.objects.prefetch_related('reviews', 'director').all()
         data = Serializer2(instance=movies, many=True).data
@@ -48,6 +50,7 @@ def movie_list(request):
             title=title,
             description=description,
             duration=duration,
+            director=director
         )
 
         new.director.set(director)
