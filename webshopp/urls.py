@@ -16,17 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from products import views
-from movieapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/directors/', include('movieapp.urls')),
-    path('api/v1/movies/', views.movie_list),
-    path('api/v1/reviews/', views.review_list),
-    path('api/v1/reviews/<int:id>/', views.detail_review_list),
-    path('api/v1/movies/<int:id>/', views.detail_movie_list),
-    path('api/v1/reviews/<int:id>/', views.detail_review_list),
-    path('api/v1/directors/<int:id>/', views.detail_director_list),
+    path('movieapp/', include('movieapp.urls')),
     path('api/v1/users/', include('users.urls')),
 ]
